@@ -3,6 +3,7 @@ package cn.itcast.bos.dao.base;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,6 +19,7 @@ public class StandardRepositoryTest {
     private StandardRepository standardRepository;
 
     @Test
+    //@Query("from Standard where name=?")
     public void testQuery(){
         System.out.println(standardRepository.queryByName2("66-88公斤"));
     }

@@ -1,7 +1,10 @@
 package cn.itcast.bos.service.base.impl;
 
+import cn.itcast.bos.dao.base.CourierRepository;
 import cn.itcast.bos.dao.base.StandardRepository;
+import cn.itcast.bos.domain.base.Courier;
 import cn.itcast.bos.domain.base.Standard;
+import cn.itcast.bos.service.base.CourierService;
 import cn.itcast.bos.service.base.StandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,22 +19,22 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class StandardServiceImpl implements StandardService {
+public class CourierServiceImpl implements CourierService {
     @Autowired
-    private StandardRepository standardRepository;
+    private CourierRepository courierRepository;
 
     @Override
-    public void save(Standard standard) {
-        standardRepository.save(standard);
+    public void save(Courier courier) {
+        courierRepository.save(courier);
     }
 
     @Override
-    public Page<Standard> findPageData(Pageable pageable) {
-        return standardRepository.findAll(pageable);
+    public Page<Courier> findPageData(Pageable pageable) {
+        return courierRepository.findAll(pageable);
     }
 
     @Override
-    public List<Standard> findAll() {
-        return standardRepository.findAll();
+    public List<Courier> findAll() {
+        return courierRepository.findAll();
     }
 }
