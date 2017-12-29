@@ -20,295 +20,342 @@
 			}
 			
 			function doEdit(){
-				alert("修改...");
+				var rows = $("#grid").datagrid("getSelections");
+				if(rows.length!=1){
+				    $.messager.alert("警告","修改数据一次只可选中一行!","warning");
+				}else{
+				    var row = rows[0];
+				    $("#saveForm").form("load",row);
+				    $("#addWindow").window("open");
+				}
 			}
 			
 			function doDelete(){
-				alert("删除...");
-			}
-			
-			function doSearch(){
-				$('#searchWindow').window("open");
-			}
-			
-			function doAssociations(){
-				$('#customerWindow').window('open');
-			}
-			
-			//工具栏
-			var toolbar = [ {
-				id : 'button-search',	
-				text : '查询',
-				iconCls : 'icon-search',
-				handler : doSearch
-			}, {
-				id : 'button-add',
-				text : '增加',
-				iconCls : 'icon-add',
-				handler : doAdd
-			}, {
-				id : 'button-edit',	
-				text : '修改',
-				iconCls : 'icon-edit',
-				handler : doEdit
-			},{
-				id : 'button-delete',
-				text : '删除',
-				iconCls : 'icon-cancel',
-				handler : doDelete
-			},{
-				id : 'button-association',
-				text : '关联客户',
-				iconCls : 'icon-sum',
-				handler : doAssociations
-			},{
-				id : 'button-association-courier',
-				text : '关联快递员',
-				iconCls : 'icon-sum',
-				handler : function(){
-					// 判断是否已经选中了一个定区，弹出关联快递员窗口 
-					var rows = $("#grid").datagrid('getSelections');
-					if(rows.length==1){
-						// 只选择了一个定区
-						// 弹出定区关联快递员 窗口 
-						$("#courierWindow").window('open');
-					}else{
-						// 没有选中定区，或者选择 了多个定区
-						$.messager.alert("警告","关联快递员,只能（必须）选择一个定区","warning");
-					}
-				}
-			}];
-			// 定义列
-			var columns = [ [ {
-				field : 'id',
-				title : '编号',
-				width : 80,
-				align : 'center',
-				checkbox:true
-			},{
-				field : 'fixedAreaNum',
-				title : '定区编号',
-				width : 120,
-				align : 'center',
-				formatter : function(value,row,index){
-					return row.id ;
-				}
-			},{
-				field : 'fixedAreaName',
-				title : '定区名称',
-				width : 120,
-				align : 'center'
-			}, {
-				field : 'fixedAreaLeader',
-				title : '负责人',
-				width : 120,
-				align : 'center'
-			}, {
-				field : 'telephone',
-				title : '联系电话',
-				width : 120,
-				align : 'center'
-			}, {
-				field : 'company',
-				title : '所属公司',
-				width : 120,
-				align : 'center'
-			} ] ];
-			
-			$(function(){
-				// 先将body隐藏，再显示，不会出现页面刷新效果
-				$("body").css({visibility:"visible"});
-				
-				// 定区数据表格
-				$('#grid').datagrid( {
-					iconCls : 'icon-forward',
-					fit : true,
-					border : true,
-					rownumbers : true,
-					striped : true,
-					pageList: [30,50,100],
-					pagination : true,
-					toolbar : toolbar,
-					url : "../../data/fixed_area.json",
-					idField : 'id',
-					columns : columns,
-					onDblClickRow : doDblClickRow
-				});
-				
-				// 添加、修改定区
-				$('#addWindow').window({
-			        title: '添加修改定区',
-			        width: 600,
-			        modal: true,
-			        shadow: true,
-			        closed: true,
-			        height: 400,
-			        resizable:false
-			    });
-				
-				// 查询定区
-				$('#searchWindow').window({
-			        title: '查询定区',
-			        width: 400,
-			        modal: true,
-			        shadow: true,
-			        closed: true,
-			        height: 400,
-			        resizable:false
-			    });
-				$("#btn").click(function(){
-					alert("执行查询...");
-				});
-				
-			});
-		
-			function doDblClickRow(){
-				alert("双击表格数据...");
-				$('#association_subarea').datagrid( {
-					fit : true,
-					border : true,
-					rownumbers : true,
-					striped : true,
-					url : "../../data/sub_area.json",
-					columns : [ [{
-						field : 'id',
-						title : '分拣编号',
-						width : 120,
-						align : 'center'
-					},{
-						field : 'province',
-						title : '省',
-						width : 120,
-						align : 'center',
-						formatter : function(data,row ,index){
-							if(row.area!=null){
-								return row.area.province;
-							}
-							return "";
-						}
-					}, {
-						field : 'city',
-						title : '市',
-						width : 120,
-						align : 'center',
-						formatter : function(data,row ,index){
-							if(row.area!=null){
-								return row.area.city;
-							}
-							return "";
-						}
-					}, {
-						field : 'district',
-						title : '区',
-						width : 120,
-						align : 'center',
-						formatter : function(data,row ,index){
-							if(row.area!=null){
-								return row.area.district;
-							}
-							return "";
-						}
-					}, {
-						field : 'keyWords',
-						title : '关键字',
-						width : 120,
-						align : 'center'
-					}, {
-						field : 'startnum',
-						title : '起始号',
-						width : 100,
-						align : 'center'
-					}, {
-						field : 'endnum',
-						title : '终止号',
-						width : 100,
-						align : 'center'
-					} , {
-						field : 'single',
-						title : '单双号',
-						width : 100,
-						align : 'center'
-					} , {
-						field : 'assistKeyWords',
-						title : '辅助关键字',
-						width : 100,
-						align : 'center'
-					} ] ]
-				});
-				$('#association_customer').datagrid( {
-					fit : true,
-					border : true,
-					rownumbers : true,
-					striped : true,
-					url : "../../data/association_customer.json",
-					columns : [[{
-						field : 'id',
-						title : '客户编号',
-						width : 120,
-						align : 'center'
-					},{
-						field : 'name',
-						title : '客户名称',
-						width : 120,
-						align : 'center'
-					}, {
-						field : 'company',
-						title : '所属单位',
-						width : 120,
-						align : 'center'
-					}]]
-				});
-				$('#association_courier').datagrid({
-					fit : true,
-					border : true,
-					rownumbers : true,
-					striped : true,
-					url : "../../data/courier.json",
-					columns : [[{
-						field : 'id',
-						title : '编号',
-						width : 120,
-						align : 'center'
-					},{
-						field : 'courierNum',
-						title : '快递员工号',
-						width : 120,
-						align : 'center'
-					},{
-						field : 'name',
-						title : '快递员姓名',
-						width : 120,
-						align : 'center'
-					}, {
-						field : 'standard.name',
-						title : '收派标准',
-						width : 120,
-						align : 'center',
-						formatter : function(value,row,index){
-							if(row.standard != null){
-								return row.standard.name;
-							}
-							return null ; 
-						}
-					}, {
-						field : 'taketime.name',
-						title : '收派时间',
-						width : 120,
-						align : 'center',
-						formatter : function(value,row,index){
-							if(row.taketime != null){
-								return row.taketime.name;
-							}
-							return null ; 
-						}
-					}, {
-						field : 'company',
-						title : '所属单位',
-						width : 120,
-						align : 'center'
-					}]]
-				});
-			}
+                var rows = $("#grid").datagrid("getSelections");
+                if(rows.length!=1){
+                    //没选或者多选
+                    $.messager.alert("警告","只可选中一行!!","warning");
+                }else{
+                    //只选一行
+                    var row = rows[0];
+                    $("#areaFrom").form("load",row);
+                    $('#addWindow').window("open");
+                }
+            }
+
+            function doDelete() {
+                //获取页面中的所有勾选快递员 id
+                var rows = $("#grid").datagrid("getSelections");
+                if (rows.length == 0) {
+                    //没有选中数据
+                    $.messager.alert("警告", "删除区域时必须选中一条以上数据", "warning");
+                } else {
+                    //选中数据
+                    //获取所选所有id,拼接字符串方法
+                    var array = new Array();
+                    for (var i = 0; i < rows.length; i++) {
+                        array.push(rows[i].id);
+                    }
+                    //生成字符串
+                    var ids = array.join(',');
+                    //将字符串发送服务器
+                    window.location.href = "../../fixedArea_delete.action?ids=" + ids;
+                }
+            }
+
+                function doSearch() {
+                    $('#searchWindow').window("open");
+                }
+
+                function doAssociations() {
+                    $('#customerWindow').window('open');
+                }
+
+                //工具栏
+                var toolbar = [{
+                    id: 'button-search',
+                    text: '查询',
+                    iconCls: 'icon-search',
+                    handler: doSearch
+                }, {
+                    id: 'button-add',
+                    text: '增加',
+                    iconCls: 'icon-add',
+                    handler: doAdd
+                }, {
+                    id: 'button-edit',
+                    text: '修改',
+                    iconCls: 'icon-edit',
+                    handler: doEdit
+                }, {
+                    id: 'button-delete',
+                    text: '删除',
+                    iconCls: 'icon-cancel',
+                    handler: doDelete
+                }, {
+                    id: 'button-association',
+                    text: '关联客户',
+                    iconCls: 'icon-sum',
+                    handler: doAssociations
+                }, {
+                    id: 'button-association-courier',
+                    text: '关联快递员',
+                    iconCls: 'icon-sum',
+                    handler: function () {
+                        // 判断是否已经选中了一个定区，弹出关联快递员窗口
+                        var rows = $("#grid").datagrid('getSelections');
+                        if (rows.length == 1) {
+                            // 只选择了一个定区
+                            // 弹出定区关联快递员 窗口
+                            $("#courierWindow").window('open');
+                        } else {
+                            // 没有选中定区，或者选择 了多个定区
+                            $.messager.alert("警告", "关联快递员,只能（必须）选择一个定区", "warning");
+                        }
+                    }
+                }];
+                // 定义列
+                var columns = [[{
+                    field: 'id',
+                    title: '编号',
+                    width: 80,
+                    align: 'center',
+                    checkbox: true
+                }, {
+                    field: 'fixedAreaNum',
+                    title: '定区编号',
+                    width: 120,
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return row.id;
+                    }
+                }, {
+                    field: 'fixedAreaName',
+                    title: '定区名称',
+                    width: 120,
+                    align: 'center'
+                }, {
+                    field: 'fixedAreaLeader',
+                    title: '负责人',
+                    width: 120,
+                    align: 'center'
+                }, {
+                    field: 'telephone',
+                    title: '联系电话',
+                    width: 120,
+                    align: 'center'
+                }, {
+                    field: 'company',
+                    title: '所属公司',
+                    width: 120,
+                    align: 'center'
+                }]];
+
+                $(function () {
+                    // 先将body隐藏，再显示，不会出现页面刷新效果
+                    $("body").css({visibility: "visible"});
+
+                    // 定区数据表格
+                    $('#grid').datagrid({
+                        iconCls: 'icon-forward',
+                        fit: true,
+                        border: true,
+                        rownumbers: true,
+                        striped: true,
+                        pageList: [3, 6, 9],
+                        pagination: true,
+                        toolbar: toolbar,
+                        url: "../../fixedArea_pageQuery.action",
+                        idField: 'id',
+                        columns: columns,
+                        onDblClickRow: doDblClickRow
+                    });
+
+                    // 添加、修改定区
+                    $('#addWindow').window({
+                        title: '添加修改定区',
+                        width: 600,
+                        modal: true,
+                        shadow: true,
+                        closed: true,
+                        height: 400,
+                        resizable: false
+                    });
+
+                    // 查询定区
+                    $('#searchWindow').window({
+                        title: '查询定区',
+                        width: 400,
+                        modal: true,
+                        shadow: true,
+                        closed: true,
+                        height: 400,
+                        resizable: false
+                    });
+                    $("#btn").click(function () {
+                        alert("执行查询...");
+                    });
+
+                    //为添加的保存按钮 添加点击事件
+                    $("#save").click(function () {
+                        //判断
+                        if ($("#saveForm").form("validate")) {
+                            $("#saveForm").submit();
+                        } else {
+                            $.messager.alert("警告", "存在非法数据!", "warning");
+                        }
+                    })
+
+                });
+
+                function doDblClickRow() {
+                    alert("双击表格数据...");
+                    $('#association_subarea').datagrid({
+                        fit: true,
+                        border: true,
+                        rownumbers: true,
+                        striped: true,
+                        url: "../../data/sub_area.json",
+                        columns: [[{
+                            field: 'id',
+                            title: '分拣编号',
+                            width: 120,
+                            align: 'center'
+                        }, {
+                            field: 'province',
+                            title: '省',
+                            width: 120,
+                            align: 'center',
+                            formatter: function (data, row, index) {
+                                if (row.area != null) {
+                                    return row.area.province;
+                                }
+                                return "";
+                            }
+                        }, {
+                            field: 'city',
+                            title: '市',
+                            width: 120,
+                            align: 'center',
+                            formatter: function (data, row, index) {
+                                if (row.area != null) {
+                                    return row.area.city;
+                                }
+                                return "";
+                            }
+                        }, {
+                            field: 'district',
+                            title: '区',
+                            width: 120,
+                            align: 'center',
+                            formatter: function (data, row, index) {
+                                if (row.area != null) {
+                                    return row.area.district;
+                                }
+                                return "";
+                            }
+                        }, {
+                            field: 'keyWords',
+                            title: '关键字',
+                            width: 120,
+                            align: 'center'
+                        }, {
+                            field: 'startnum',
+                            title: '起始号',
+                            width: 100,
+                            align: 'center'
+                        }, {
+                            field: 'endnum',
+                            title: '终止号',
+                            width: 100,
+                            align: 'center'
+                        }, {
+                            field: 'single',
+                            title: '单双号',
+                            width: 100,
+                            align: 'center'
+                        }, {
+                            field: 'assistKeyWords',
+                            title: '辅助关键字',
+                            width: 100,
+                            align: 'center'
+                        }]]
+                    });
+                    $('#association_customer').datagrid({
+                        fit: true,
+                        border: true,
+                        rownumbers: true,
+                        striped: true,
+                        url: "../../data/association_customer.json",
+                        columns: [[{
+                            field: 'id',
+                            title: '客户编号',
+                            width: 120,
+                            align: 'center'
+                        }, {
+                            field: 'name',
+                            title: '客户名称',
+                            width: 120,
+                            align: 'center'
+                        }, {
+                            field: 'company',
+                            title: '所属单位',
+                            width: 120,
+                            align: 'center'
+                        }]]
+                    });
+                    $('#association_courier').datagrid({
+                        fit: true,
+                        border: true,
+                        rownumbers: true,
+                        striped: true,
+                        url: "../../data/courier.json",
+                        columns: [[{
+                            field: 'id',
+                            title: '编号',
+                            width: 120,
+                            align: 'center'
+                        }, {
+                            field: 'courierNum',
+                            title: '快递员工号',
+                            width: 120,
+                            align: 'center'
+                        }, {
+                            field: 'name',
+                            title: '快递员姓名',
+                            width: 120,
+                            align: 'center'
+                        }, {
+                            field: 'standard.name',
+                            title: '收派标准',
+                            width: 120,
+                            align: 'center',
+                            formatter: function (value, row, index) {
+                                if (row.standard != null) {
+                                    return row.standard.name;
+                                }
+                                return null;
+                            }
+                        }, {
+                            field: 'taketime.name',
+                            title: '收派时间',
+                            width: 120,
+                            align: 'center',
+                            formatter: function (value, row, index) {
+                                if (row.taketime != null) {
+                                    return row.taketime.name;
+                                }
+                                return null;
+                            }
+                        }, {
+                            field: 'company',
+                            title: '所属单位',
+                            width: 120,
+                            align: 'center'
+                        }]]
+                    });
+
+            }
 		</script>
 	</head>
 
@@ -330,7 +377,7 @@
 			</div>
 		</div>
 
-		<!-- 添加 修改分区 -->
+		<!-- 添加 修改定区 -->
 		<div class="easyui-window" title="定区添加修改" id="addWindow" collapsible="false" minimizable="false" maximizable="false" style="top:20px;left:200px">
 			<div style="height:31px;overflow:hidden;" split="false" border="false">
 				<div class="datagrid-toolbar">
@@ -339,7 +386,7 @@
 			</div>
 
 			<div style="overflow:auto;padding:5px;" border="false">
-				<form>
+				<form id="saveForm" action="../../fixedArea_save.action" method="post">
 					<table class="table-edit" width="80%" align="center">
 						<tr class="title">
 							<td colspan="2">定区信息</td>
@@ -353,7 +400,7 @@
 						<tr>
 							<td>定区名称</td>
 							<td>
-								<input type="text" name="name" class="easyui-validatebox" required="true" />
+								<input type="text" name="fixedAreaName" class="easyui-validatebox" required="true" />
 							</td>
 						</tr>
 						<tr>

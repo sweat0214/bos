@@ -1,13 +1,12 @@
 package cn.itcast.bos.domain.base;
 
+import org.apache.struts2.json.annotations.JSON;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
@@ -91,7 +90,7 @@ public class Area {
 	public void setShortcode(String shortcode) {
 		this.shortcode = shortcode;
 	}
-
+	@JSON(serialize = false)
 	public Set<SubArea> getSubareas() {
 		return subareas;
 	}
@@ -99,7 +98,10 @@ public class Area {
 	public void setSubareas(Set<SubArea> subareas) {
 		this.subareas = subareas;
 	}
-
+	@Transient
+	public String getArea(){
+		return province+"-"+city+"-"+district;
+	}
 	@Override
 	public String toString() {
 		return "Area [id=" + id + ", province=" + province + ", city=" + city
@@ -107,4 +109,18 @@ public class Area {
 				+ ", citycode=" + citycode + ", shortcode=" + shortcode + "]";
 	}
 
+
+
+	public Area(String id, String province, String city, String district, String postcode, String citycode, String shortcode) {
+		this.id = id;
+		this.province = province;
+		this.city = city;
+		this.district = district;
+		this.postcode = postcode;
+		this.citycode = citycode;
+		this.shortcode = shortcode;
+	}
+
+	public Area() {
+	}
 }

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.concurrent.Delayed;
 
 
 /**
@@ -17,4 +18,5 @@ public interface StandardService {
     public Page<Standard> findPageData(Pageable pageable);
     //获得所有收派标准方法
     List<Standard> findAll();
+
 }

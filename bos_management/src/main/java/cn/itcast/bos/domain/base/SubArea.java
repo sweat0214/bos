@@ -1,5 +1,7 @@
 package cn.itcast.bos.domain.base;
 
+import org.apache.struts2.json.annotations.JSON;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -82,7 +84,7 @@ public class SubArea {
 	public void setAssistKeyWords(String assistKeyWords) {
 		this.assistKeyWords = assistKeyWords;
 	}
-
+	//@JSON(serialize = false)
 	public Area getArea() {
 		return area;
 	}
@@ -90,7 +92,7 @@ public class SubArea {
 	public void setArea(Area area) {
 		this.area = area;
 	}
-
+	//@JSON(serialize = false)
 	public FixedArea getFixedArea() {
 		return fixedArea;
 	}

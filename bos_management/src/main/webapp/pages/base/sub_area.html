@@ -20,7 +20,18 @@
 			}
 			
 			function doEdit(){
-				alert("修改...");
+			    //得到选中数据,
+				var rows = $("#grid").datagrid("getSelections");
+				if(rows.length!=1){
+				    $.messager.alert("警告","亲!一次只可修改一行!");
+				}else{
+				    var row = rows[0];
+				    $("#saveForm").form('load',row);
+                    $("#qy").combobox('setValue',row.area.id);
+                    $("#dq").combobox('setValue',row.fixedArea.id);
+				    $("#addWindow").window('open');
+				}
+
 			}
 			
 			function doDelete(){
@@ -122,12 +133,12 @@
 				width : 120,
 				align : 'center'
 			}, {
-				field : 'startnum',
+				field : 'startNum',
 				title : '起始号',
 				width : 100,
 				align : 'center'
 			}, {
-				field : 'endnum',
+				field : 'endNum',
 				title : '终止号',
 				width : 100,
 				align : 'center'
@@ -154,10 +165,10 @@
 					border : true,
 					rownumbers : true,
 					striped : true,
-					pageList: [30,50,100],
+					pageList: [5,10,20],
 					pagination : true,
 					toolbar : toolbar,
-					url : "../../data/sub_area.json",
+					url : "../../subArea_pageQuery.action",
 					idField : 'id',
 					columns : columns,
 					onDblClickRow : doDblClickRow
@@ -187,6 +198,15 @@
 				$("#btn").click(function(){
 					alert("执行查询...");
 				});
+				//添加保存按钮,设置点击事件
+				$("#save").click(function () {
+					if($("#saveForm").form('validate')){
+                        //$.messager.alert("警告","存在非法数据!","warning");
+					    $("#saveForm").submit();
+					}else{
+					    $.messager.alert("警告","存在非法数据!","warning");
+					}
+                });
 				
 			});
 		
@@ -209,7 +229,7 @@
 			</div>
 
 			<div style="overflow:auto;padding:5px;" border="false">
-				<form>
+				<form id="saveForm" action="../../subArea_save.action" method="post">
 					<table class="table-edit" width="80%" align="center">
 						<tr class="title">
 							<td colspan="2">分区信息</td>
@@ -223,13 +243,13 @@
 						<tr>
 							<td>选择区域</td>
 							<td>
-								<input class="easyui-combobox" name="area.id" data-options="valueField:'id',textField:'name',url:'../../data/area.json'" />
+								<input id="qy" class="easyui-combobox" name="area.id" data-options="valueField:'id',textField:'area',url:'../../area_findAll.action'" />
 							</td>
 						</tr>
 						<tr>
 							<td>选择定区</td>
 							<td>
-								<input class="easyui-combobox" name="fixedArea.id" data-options="valueField:'id',textField:'name',url:'../../data/fixedArea.json'" />
+								<input id="dq" class="easyui-combobox" name="fixedArea.id" data-options="valueField:'id',textField:'fixedAreaName',url:'../../fixedArea_findAll.action'" />
 							</td>
 						</tr>
 						<tr>
@@ -241,13 +261,13 @@
 						<tr>
 							<td>起始号</td>
 							<td>
-								<input type="text" name="startnum" class="easyui-validatebox" required="true" />
+								<input type="text" name="startNum" class="easyui-validatebox" required="true" />
 							</td>
 						</tr>
 						<tr>
 							<td>终止号</td>
 							<td>
-								<input type="text" name="endnum" class="easyui-validatebox" required="true" />
+								<input type="text" name="endNum" class="easyui-validatebox" required="true" />
 							</td>
 						</tr>
 						<tr>
@@ -299,7 +319,7 @@
 						<tr>
 							<td>定区编码</td>
 							<td>
-								<input type="text" name="fixedArea.id" class="easyui-validatebox" required="true" />
+								<input type="text" name="fixedarea.id" class="easyui-validatebox" required="true" />
 							</td>
 						</tr>
 						<tr>
