@@ -24,4 +24,6 @@ public interface CourierService {
     public void delBatch(String[] idArray);
 
     public void addBatch(String[] idArray);
+
+    List<Courier> findNoAssociation();
 }

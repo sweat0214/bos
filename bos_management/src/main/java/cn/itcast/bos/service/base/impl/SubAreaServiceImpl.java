@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by 宝宝心里苦丶 on 2017/12/28.
  */
@@ -29,6 +31,11 @@ public class SubAreaServiceImpl  implements SubAreaService {
         Pageable pageable = new PageRequest(page - 1, rows);
         return subAreaRepository.findAll(pageable);
 
+    }
+
+    @Override
+    public void importXls(List<SubArea> subAreas) {
+        subAreaRepository.save(subAreas);
     }
 
     /*@Override

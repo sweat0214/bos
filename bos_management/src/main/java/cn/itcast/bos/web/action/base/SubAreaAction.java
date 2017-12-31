@@ -1,8 +1,11 @@
 package cn.itcast.bos.web.action.base;
 
+import cn.itcast.bos.domain.base.Area;
+import cn.itcast.bos.domain.base.FixedArea;
 import cn.itcast.bos.domain.base.SubArea;
 import cn.itcast.bos.service.base.SubAreaService;
 import cn.itcast.bos.web.action.base.common.BaseAction;
+import com.opensymphony.xwork2.ActionContext;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -59,57 +62,79 @@ public class SubAreaAction extends BaseAction<SubArea> {
         pushPageDataToValueStack(p);
         return SUCCESS;
     }
-    /*@Action(value = "subArea_bacthImport")
-    public String bacthImport(){
+    @Action(value = "subArea_batchImport", results = @Result(name = "success", type = "json"))
+    public String importXls() {
+
         String msg = "";
         try {
             Workbook workbook = null;
-            //0判断后缀名
+
+            // 0.判断后缀名
             if (fileFileName.endsWith(".xls")) {
                 workbook = new HSSFWorkbook(new FileInputStream(file));
             } else if (fileFileName.endsWith(".xlsx")) {
                 workbook = new XSSFWorkbook(new FileInputStream(file));
             }
+
             List<SubArea> subAreas = new ArrayList<SubArea>();
-            //1.创建workBook对象
-            //2.获得sheet
+
+            // 1.创建WorkBook对象
+
+            // 2.获取Sheet页
             Sheet sheet = workbook.getSheetAt(0);
-            //3.获得row行
-            for (int i = 1; i < sheet.getLastRowNum(); i++) {
-                //获得每一行
-                Row row = sheet.getRow(i);
-                //获得每一个单元格 cell 并且获得值
-                String id = row.getCell(0).getStringCellValue();
-                String fixedAreaId = row.getCell(1).getStringCellValue();
-                String areaId = row.getCell(2).getStringCellValue();
-                SubArea subArea = subAreaService.findById(areaId);
-                String keyWords = row.getCell(3).getStringCellValue();
-                String startNum = row.getCell(4).getStringCellValue();
-                String endNum = row.getCell(5).getStringCellValue();
-                String single = row.getCell(6).getStringCellValue();
-                String assistKeyWords = row.getCell(7).getStringCellValue();
+            // 3.获取row行
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 SubArea subArea = new SubArea();
+                // 获取每一行
+                Row row = sheet.getRow(i);
+
+                // 获取每一个单元格 cell 并且获取值
+                String id = row.getCell(0).getStringCellValue();
                 subArea.setId(id);
-                subArea.setArea(subArea);
+
+                //fixedId
+                String fixedId = row.getCell(1).getStringCellValue();
+                FixedArea fixedArea = new FixedArea();
+                fixedArea.setId(fixedId);
+                subArea.setFixedArea(fixedArea);
+
+                //areaId
+                String areaId = row.getCell(2).getStringCellValue();
+                Area area = new Area();
+                area.setId(areaId);
+                subArea.setArea(area);
 
 
-                subAreas.add(area);
+                String keyWords = row.getCell(3).getStringCellValue();
+                subArea.setKeyWords(keyWords);
+                String startNum = row.getCell(4).getStringCellValue();
+                subArea.setStartNum(startNum);
+                String endNum = row.getCell(5).getStringCellValue();
+                subArea.setEndNum(endNum);
+
+                String single = row.getCell(6).getStringCellValue();
+                subArea.setSingle(single.charAt(0));
+                String assistKeyWords = row.getCell(7).getStringCellValue();
+                subArea.setAssistKeyWords(assistKeyWords);
+
+
+                subAreas.add(subArea);
 
             }
-            //保存数据
-            areaService.saveBatch(areas);
-
-            //成功!
-            msg = "上传成功";
-
+            // 保存数据
+            subAreaService.importXls(subAreas);
+            //成功！！！
+            msg = "上传成功！";
         } catch (Exception e) {
             e.printStackTrace();
-            msg = "上传失败!";
+
+            msg = "上传失败！";
         }
+
         ActionContext.getContext().getValueStack().push(msg);
 
-        return "success";
-    }*/
+        return SUCCESS;
+    }
 
 
 }

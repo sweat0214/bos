@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -137,6 +138,20 @@ public class CourierAction extends ActionSupport implements ModelDriven<Courier>
         //按, 分割ids
         String[] idArray = ids.split(",");
         courierService.addBatch(idArray);
+        return SUCCESS;
+    }
+    @Action(value = "courier_findnoassociation",results = {@Result(name = "success",type = "json")})
+    /**
+    * @Description (查寻未关联定区的快递员)
+    * @name findnoassociation
+    * @param []
+    * @return java.lang.String
+    */
+    public String findnoassociation(){
+        //调用业务层,查寻未关联定区的快递员
+        List<Courier> couriers = courierService.findNoAssociation();
+        //压栈
+        ActionContext.getContext().getValueStack().push(couriers);
         return SUCCESS;
     }
 }

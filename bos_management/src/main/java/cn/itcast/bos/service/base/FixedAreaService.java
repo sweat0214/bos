@@ -14,4 +14,6 @@ public interface FixedAreaService {
     Page findPageData(FixedArea fixedArea,int page,int rows);
 
     void deleteById(String[] idArray);
+
+    void associationCourierToFixedArea(FixedArea model, Integer courierId, Integer takeTimeId);
 }

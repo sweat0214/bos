@@ -5,14 +5,7 @@ import org.apache.struts2.json.annotations.JSON;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @description:快递员
@@ -168,5 +161,9 @@ public class Courier {
 
 	public void setStandard(Standard standard) {
 		this.standard = standard;
+	}
+	@Transient
+	public String getInfo(){
+		return name +"("+company+")";
 	}
 }
