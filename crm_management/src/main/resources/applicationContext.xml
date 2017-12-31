@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		 http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<!-- 扫描 @Server @Controller @Repository -->
+	<context:component-scan base-package="cn.itcast"/>
+
+	<!-- 加载properties文件 -->
+	<context:property-placeholder location="classpath:config.properties" />
+	
+	<!-- 引入 数据库连接配置文件  -->
+	<import resource="applicationContext-dataSource.xml"/>
+	<!--
+	配置服务
+		address 客户访问服务路径
+		 serviceClass 配置服务接口
+		 serviceBean 配置实体类
+	-->
+	<jaxrs:server id="customerService" address="/customerService">
+		<jaxrs:serviceBeans>
+			 <bean class="cn.itcast.crm.service.impl.CustomerServiceImpl"/>
+		</jaxrs:serviceBeans>
+		<jaxrs:inInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+		</jaxrs:outInterceptors>
+	</jaxrs:server>
+</beans>
