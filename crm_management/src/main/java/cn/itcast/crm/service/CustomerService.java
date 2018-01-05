@@ -28,4 +28,17 @@ public interface CustomerService {
     public void associationCustomersToFixedArea(
             @QueryParam("customerIdStr") String customerIdStr,
             @QueryParam("fixedAreaId") String fixedAreaId);
+    @Path("/customer")
+    @POST
+    @Consumes({"application/xml","application/json"})
+    public void regist(Customer customer);
+
+    @Path("/customer/telephone/{telephone}")
+    @GET
+    @Consumes({"application/xml","application/json"})
+    public Customer findByTelephone(@PathParam("telephone") String telephone);
+
+    @Path("customer/updatetype/{telephone}")
+    @GET
+    public void updateType(@PathParam("telephone") String telephone);
 }
