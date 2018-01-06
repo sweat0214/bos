@@ -3,7 +3,7 @@ package cn.itcast.bos.web.action.base;
 import cn.itcast.bos.domain.base.Area;
 import cn.itcast.bos.service.base.AreaService;
 import cn.itcast.bos.utils.PinYin4jUtils;
-import cn.itcast.bos.web.action.base.common.BaseAction;
+import cn.itcast.bos.web.action.common.BaseAction;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -47,7 +47,7 @@ import java.util.List;
 @Namespace("/")
 @Controller
 @Scope("prototype")
-public class AreaAction extends BaseAction<Area>{
+public class AreaAction extends BaseAction<Area> {
     @Autowired
     private AreaService areaService;
 

@@ -1,10 +1,8 @@
-package cn.itcast.bos.web.action.base.common;
+package cn.itcast.bos.web.action.common;
 
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.data.domain.Page;
 
 import java.lang.reflect.ParameterizedType;

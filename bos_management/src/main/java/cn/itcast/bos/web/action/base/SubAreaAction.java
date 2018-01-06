@@ -4,7 +4,7 @@ import cn.itcast.bos.domain.base.Area;
 import cn.itcast.bos.domain.base.FixedArea;
 import cn.itcast.bos.domain.base.SubArea;
 import cn.itcast.bos.service.base.SubAreaService;
-import cn.itcast.bos.web.action.base.common.BaseAction;
+import cn.itcast.bos.web.action.common.BaseAction;
 import com.opensymphony.xwork2.ActionContext;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
